@@ -1,5 +1,5 @@
 export const RegisterForm = () => {
-
+	
 	return `
 	<form class="row g-3">
 		<h2>Register</h2>
