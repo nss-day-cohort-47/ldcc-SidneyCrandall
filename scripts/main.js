@@ -6,11 +6,7 @@ import { NavBar } from "./nav/NavBar.js";
 import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
-import {
-	logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser,
-	getSnacks, getSingleSnack
-} from "./data/apiManager.js";
-
+import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings } from "./data/apiManager.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
@@ -31,8 +27,8 @@ applicationElement.addEventListener("click", event => {
 					startLDSnacks();
 				} else {
 					//got a false value - no user
-					const entryElement = document.querySelector(".entryForm");
-					entryElement.innerHTML = `<p class="center">That user does not exist. Please try again or register for your free account.</p> ${LoginForm()} <hr/> <hr/> ${RegisterForm()}`;
+					const listElement = document.querySelector(".mainContainer");
+					listElement.innerHTML = `<p class="center">That user does not exist. Please try again or register for your free account.</p> ${LoginForm()} <hr/> <hr/> ${RegisterForm()}`;
 				}
 			})
 	} else if (event.target.id === "register__submit") {
@@ -78,7 +74,7 @@ applicationElement.addEventListener("click", event => {
 		showSnackList();
 	}
 })
-
+// for snack detail button
 const showDetails = (snackObj) => {
 	const listElement = document.querySelector("#mainContent");
 	listElement.innerHTML = SnackDetails(snackObj);
@@ -127,3 +123,4 @@ const startLDSnacks = () => {
 }
 
 checkForUser();
+
