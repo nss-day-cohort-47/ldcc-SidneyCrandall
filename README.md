@@ -57,3 +57,7 @@ This exercise utilizes the following:
 1. Related data
 1. Filtering data
 1. DB calls: POST, PUT, GET.
+
+### My ERD
+
+![](images/ERD.png)
