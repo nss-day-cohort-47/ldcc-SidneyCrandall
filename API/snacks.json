@@ -473,7 +473,7 @@
     {
       "name": "Sidney ",
       "email": "sid@sc.com",
-      "isAdmin": false,
+      "admin": false,
       "id": 5
     }
   ]

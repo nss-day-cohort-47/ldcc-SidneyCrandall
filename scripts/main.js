@@ -6,7 +6,7 @@ import { NavBar } from "./nav/NavBar.js";
 import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
-import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings } from "./data/apiManager.js";
+import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useSnackToppings } from "./data/apiManager.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
@@ -36,7 +36,7 @@ applicationElement.addEventListener("click", event => {
 		const userObject = {
 			name: document.querySelector("input[name='registerName']").value,
 			email: document.querySelector("input[name='registerEmail']").value,
-			isAdmin: false
+			admin: false
 		}
 		registerUser(userObject)
 			.then(dbUserObj => {
@@ -78,13 +78,16 @@ applicationElement.addEventListener("click", event => {
 applicationElement.addEventListener("change", event => {
 	event.preventDefault();
 	const toppingSelect = document.querySelector("#toppingSelect")
-	console.log(event.target.value) 
-	if(event.target.value === "toppingSelect") {
-		const toppingSelected = document.getElementById ("toppingSelect");
-		const toppingID = toppingSelected.options[toppingSelected.selectedIndex].value;
+	console.log(event.target.value)
+	let snackSelection = useSnackToppings();
+	for (let aSnack of snackSelection) {
+		if (aSnack.type.name === event.target.value);
+	// if(event.target.value === "toppingSelect") {
+		// const toppingSelected = document.getElementById("toppingSelect");
+		//const toppingID = toppingSelect.options[toppingSelect.selectedIndex].value;
 
 		//select topping which filter all snacks with that topping on it and run snacklist on array
-		showSnackList(toppingID);
+		showSnackList(aSnack);
 	}
 })
 
@@ -133,6 +136,7 @@ const startLDSnacks = () => {
 	applicationElement.innerHTML += `<div id="mainContent"></div>`;
 	showSnackList();
 	showFooter();
+	getSnackToppings();
 
 }
 
