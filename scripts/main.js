@@ -74,6 +74,20 @@ applicationElement.addEventListener("click", event => {
 		showSnackList();
 	}
 })
+
+applicationElement.addEventListener("change", event => {
+	event.preventDefault();
+	const toppingSelect = document.querySelector("#toppingSelect")
+	console.log(event.target.value) 
+	if(event.target.value === "toppingSelect") {
+		const toppingSelected = document.getElementById ("toppingSelect");
+		const toppingID = toppingSelected.options[toppingSelected.selectedIndex].value;
+
+		//select topping which filter all snacks with that topping on it and run snacklist on array
+		showSnackList(toppingID);
+	}
+})
+
 // for snack detail button
 const showDetails = (snackObj) => {
 	const listElement = document.querySelector("#mainContent");
