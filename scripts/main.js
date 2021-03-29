@@ -2,11 +2,11 @@ console.log('yum, yum, yum');
 
 import { LoginForm } from "./auth/LoginForm.js";
 import { RegisterForm } from "./auth/RegisterForm.js";
-import { NavBar } from "./nav/NavBar.js";
+import { NavBar, toppingDropdown } from "./nav/NavBar.js";
 import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
-import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useSnackToppings } from "./data/apiManager.js";
+import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection } from "./data/apiManager.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
@@ -75,19 +75,13 @@ applicationElement.addEventListener("click", event => {
 	}
 })
 
+// Toppings listener
 applicationElement.addEventListener("change", event => {
 	event.preventDefault();
-	const toppingSelect = document.querySelector("#toppingSelect")
-	console.log(event.target.value)
-	let snackSelection = useSnackToppings();
-	for (let aSnack of snackSelection) {
-		if (aSnack.type.name === event.target.value);
-	// if(event.target.value === "toppingSelect") {
-		// const toppingSelected = document.getElementById("toppingSelect");
-		//const toppingID = toppingSelect.options[toppingSelect.selectedIndex].value;
-
-		//select topping which filter all snacks with that topping on it and run snacklist on array
-		showSnackList(aSnack);
+	const toppingSelect = document.querySelector(".toppingDropdown")
+	//listElement.innerHTML = toppingSelect
+		console.log(event.target.value, 'I Hear You')
+	if (event.target.value === "1") {	
 	}
 })
 
@@ -132,13 +126,15 @@ const showFooter = () => {
 
 const startLDSnacks = () => {
 	applicationElement.innerHTML = "";
-	showNavBar();
-	applicationElement.innerHTML += `<div id="mainContent"></div>`;
-	showSnackList();
-	showFooter();
-	getSnackToppings();
-
+	getToppings().then(() =>{
+		showNavBar();
+		applicationElement.innerHTML += `<div id="mainContent"></div>`;
+		showSnackList();
+		showFooter();
+	})
+	//toppingDropdown();
 }
 
 checkForUser();
+
 
