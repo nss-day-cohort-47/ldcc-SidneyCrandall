@@ -45,7 +45,6 @@ export const registerUser = (userObj) => {
 		})
 }
 
-
 ///// snack functions
 
 let snackCollection = [];
@@ -87,7 +86,7 @@ export const getSnackToppings = (snackId) => {
 
 let toppingsCollection = [];
 
-export const useSnackToppings = () => {
+export const useToppingsCollection = () => {
 	//Best practice: we don't want to alter the original state, so
 	//make a copy of it and then return it
 	//the spread operator makes quick work
@@ -102,4 +101,4 @@ export const getToppings = () => {
 		toppingsCollection = parsedResponse
 		return parsedResponse;
 	})
-}
+};

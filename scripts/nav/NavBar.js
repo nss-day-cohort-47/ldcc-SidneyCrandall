@@ -1,8 +1,24 @@
-import { getLoggedInUser } from "../data/apiManager.js"
+import { getLoggedInUser, getToppings, useToppingsCollection } from "../data/apiManager.js"
+
+export const toppingDropdown = () => {
+ //const DOMLoaction = document.querySelector(".topping-dropdown")
+
+
+	const toppingsArray = useToppingsCollection()
+	console.log(toppingsArray);
+	//let topppingsSelect = "";
+	const toppingsSelection = toppingsArray.map((topping) => {
+		 return `<option value="${topping.id}">${topping.name}</option>`
+	});
+	console.log(toppingsSelection)
+	return toppingsSelection
+
+}
 
 export const NavBar = () => {
 	//only show navItems and addTypeButton if user is logged in
-	
+
+	//toppingDropdown();
 	const navItems = getLoggedInUser().id ? `
 	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -13,11 +29,9 @@ export const NavBar = () => {
 			<button class="btn btn-info" type="button" id="allSnacks">All Snacks</button>
 		</li>
 		<li class="nav-item ms-1">
-			<select class="form-select form-select btn-info" aria-label="Select A Topping">
+			<select class="form-select topping-dropdown btn-info" aria-label="Select A Topping">
 				<option selected>Select A Topping</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>
+				${toppingDropdown()};
 			</select>
 		</li>
 		<li class="nav-item ms-1">
@@ -45,3 +59,16 @@ export const NavBar = () => {
 	${addTypeButton}
 	`
 }
+
+
+
+
+/*<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>*/
+
+/*<option selected>Select A Topping</option>
+				<option value="1">One</option>
+				<option value="2">Two</option>
+				<option value="3">Three</option>*/
+		
