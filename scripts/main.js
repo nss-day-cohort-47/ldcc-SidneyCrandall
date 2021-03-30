@@ -2,16 +2,17 @@ console.log('yum, yum, yum');
 
 import { LoginForm } from "./auth/LoginForm.js";
 import { RegisterForm } from "./auth/RegisterForm.js";
-import { NavBar, toppingDropdown } from "./nav/NavBar.js";
+import { NavBar, populateDropdown, toppingDropdown } from "./nav/NavBar.js";
 import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
-import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection } from "./data/apiManager.js";
+import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection, useSnackCollection } from "./data/apiManager.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
 
 //login/register listeners
+
 applicationElement.addEventListener("click", event => {
 	event.preventDefault();
 	if (event.target.id === "login__submit") {
@@ -56,6 +57,7 @@ applicationElement.addEventListener("click", event => {
 // end login register listeners
 
 // snack listeners
+
 applicationElement.addEventListener("click", event => {
 	event.preventDefault();
 
@@ -76,17 +78,28 @@ applicationElement.addEventListener("click", event => {
 })
 
 // Toppings listener
+
 applicationElement.addEventListener("change", event => {
 	event.preventDefault();
-	const toppingSelect = document.querySelector(".toppingDropdown")
-	//listElement.innerHTML = toppingSelect
-		console.log(event.target.value, 'I Hear You')
-	if (event.target.value === "1") {	
+	if(event.target.id === "toppingDropdown") {
+		let snackSelection = event.target.value
+		getSnackToppings(snackSelection)
+		.then(response => {
+			let selectToppingsArray = [];
+			response.find(topping => {
+				selectToppingsArray.push(topping.snack)
+				console.log("I can hear it")
+			})
+			const listElement = document.querySelector("#mainContent")
+			listElement.innerHTML = SnackList(selectToppingsArray)
+		})
+	
 	}
 })
 
 // for snack detail button
-const showDetails = (snackObj) => {
+
+const showDetails = (snackObj, toppingObject) => {
 	const listElement = document.querySelector("#mainContent");
 	listElement.innerHTML = SnackDetails(snackObj);
 }
@@ -131,6 +144,7 @@ const startLDSnacks = () => {
 		applicationElement.innerHTML += `<div id="mainContent"></div>`;
 		showSnackList();
 		showFooter();
+	
 	})
 	//toppingDropdown();
 }
@@ -138,3 +152,9 @@ const startLDSnacks = () => {
 checkForUser();
 
 
+	//getSnackToppings(snackChoice)
+			//.then(response => {
+				//let selectATopping = [];
+				//response.filter(topping => {
+					//selectATopping.find(topping => topping.toppingId === parseInt(snackChoice))
+				//})

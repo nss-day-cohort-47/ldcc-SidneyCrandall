@@ -1,18 +1,24 @@
 import { getLoggedInUser, getToppings, useToppingsCollection } from "../data/apiManager.js"
 
+
+// Using the fetch() to call the toppings 
 export const toppingDropdown = () => {
- //const DOMLoaction = document.querySelector(".topping-dropdown")
-
-
 	const toppingsArray = useToppingsCollection()
 	console.log(toppingsArray);
 	//let topppingsSelect = "";
 	const toppingsSelection = toppingsArray.map((topping) => {
 		 return `<option value="${topping.id}">${topping.name}</option>`
 	});
-	console.log(toppingsSelection)
-	return toppingsSelection
+	
+	return toppingsSelection.join("")
+}
 
+export const populateDropdown = () => {
+	getToppings()
+		.then(() => {
+			const selection = useToppingsCollection()
+			toppingDropdown(selection)
+		})
 }
 
 export const NavBar = () => {
@@ -29,7 +35,7 @@ export const NavBar = () => {
 			<button class="btn btn-info" type="button" id="allSnacks">All Snacks</button>
 		</li>
 		<li class="nav-item ms-1">
-			<select class="form-select topping-dropdown btn-info" aria-label="Select A Topping">
+			<select class="form-select topping-dropdown btn-info" id="toppingDropdown" aria-label="Select A Topping">
 				<option selected>Select A Topping</option>
 				${toppingDropdown()};
 			</select>
@@ -61,14 +67,4 @@ export const NavBar = () => {
 }
 
 
-
-
-/*<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>*/
-
-/*<option selected>Select A Topping</option>
-				<option value="1">One</option>
-				<option value="2">Two</option>
-				<option value="3">Three</option>*/
 		
