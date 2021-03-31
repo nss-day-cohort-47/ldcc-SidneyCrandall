@@ -2,16 +2,18 @@ console.log('yum, yum, yum');
 
 import { LoginForm } from "./auth/LoginForm.js";
 import { RegisterForm } from "./auth/RegisterForm.js";
-import { NavBar, toppingDropdown } from "./nav/NavBar.js";
+import { NavBar, populateDropdown, toppingDropdown } from "./nav/NavBar.js";
 import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
-import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection } from "./data/apiManager.js";
+import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection, useSnackCollection } from "./data/apiManager.js";
+import { modalFunction } from "./nav/ModalFunction.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
 
 //login/register listeners
+
 applicationElement.addEventListener("click", event => {
 	event.preventDefault();
 	if (event.target.id === "login__submit") {
@@ -53,9 +55,35 @@ applicationElement.addEventListener("click", event => {
 		checkForUser();
 	}
 })
+
+applicationElement.addEventListener("click", event => {
+    event.preventDefault();
+    if (event.target.id === "newPost__submit") {
+        const name = document.querySelector("input[name='addSnackNameHere']").value
+        const snackImg = document.querySelector("input[name='addSnackImageHere']").value
+        const count = document.querySelector("input[name='addSnackCountHere']").value
+        const inFlavorId = document.querySelector("input[name='addSnackShapeHere']").value
+        const shapeId = document.querySelector("input[name='addSnackFlavorHere']").value
+        const seasonId = document.querySelector("input[name='addSnackSeasonHere']").value
+        const description = document.querySelector("input[name='addSnackDescriptionHere']").value
+        const toppings = document.querySelector("input[name='addSnackToppingsHere']").value
+            const snackObj = {
+            name: name,
+            snackImg: snackImg, 
+            count: count,
+            shapeId: shapeId,
+            inFlavorId: inFlavorId,
+            seasonId: seasonId,
+            description: description,
+            toppings: toppings
+        }
+        createSnack(snackObj)
+    }
+});
 // end login register listeners
 
 // snack listeners
+
 applicationElement.addEventListener("click", event => {
 	event.preventDefault();
 
@@ -76,17 +104,28 @@ applicationElement.addEventListener("click", event => {
 })
 
 // Toppings listener
+
 applicationElement.addEventListener("change", event => {
 	event.preventDefault();
-	const toppingSelect = document.querySelector(".toppingDropdown")
-	//listElement.innerHTML = toppingSelect
-		console.log(event.target.value, 'I Hear You')
-	if (event.target.value === "1") {	
+	if(event.target.id === "toppingDropdown") {
+		let snackSelection = event.target.value
+		getSnackToppings(snackSelection)
+		.then(response => {
+			let selectToppingsArray = [];
+			response.find(topping => {
+				selectToppingsArray.push(topping.snack)
+				console.log("I can hear it")
+			})
+			const listElement = document.querySelector("#mainContent")
+			listElement.innerHTML = SnackList(selectToppingsArray)
+		})
+	
 	}
 })
 
 // for snack detail button
-const showDetails = (snackObj) => {
+
+const showDetails = (snackObj, toppingObject) => {
 	const listElement = document.querySelector("#mainContent");
 	listElement.innerHTML = SnackDetails(snackObj);
 }
@@ -131,6 +170,7 @@ const startLDSnacks = () => {
 		applicationElement.innerHTML += `<div id="mainContent"></div>`;
 		showSnackList();
 		showFooter();
+		modalFunction();
 	})
 	//toppingDropdown();
 }
@@ -138,3 +178,9 @@ const startLDSnacks = () => {
 checkForUser();
 
 
+	//getSnackToppings(snackChoice)
+			//.then(response => {
+				//let selectATopping = [];
+				//response.filter(topping => {
+					//selectATopping.find(topping => topping.toppingId === parseInt(snackChoice))
+				//})

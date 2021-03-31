@@ -58,7 +58,7 @@ export const useSnackCollection = () => {
 }
 
 export const getSnacks = () => {
-	return fetch(`${apiURL}/snacks`)
+	return fetch(`${apiURL}/snacks/?_embed=snackToppings`)
 	.then(response => response.json())
 	.then(parsedResponse => {
 		snackCollection = parsedResponse
@@ -77,8 +77,8 @@ export const getSingleSnack = (snackId) => {
 	})
 }
 
-export const getSnackToppings = (snackId) => {
-	return fetch(`${apiURL}/snackToppings?snackId=${snackId}&_expand=topping`)
+export const getSnackToppings = (toppingId) => {
+	return fetch(`${apiURL}/snackToppings?toppingId=${toppingId}&_expand=topping`)
 	.then(response => response.json())
 };
 
@@ -102,3 +102,16 @@ export const getToppings = () => {
 		return parsedResponse;
 	})
 };
+
+
+// make post
+export const createSnack = snackObj => {
+    return fetch(`${apiURL}/snacks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(snackObj)
+        })
+        .then(response => response.json())
+}
