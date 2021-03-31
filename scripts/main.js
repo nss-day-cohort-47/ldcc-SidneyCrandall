@@ -7,6 +7,7 @@ import { SnackList } from "./snacks/SnackList.js";
 import { SnackDetails } from "./snacks/SnackDetails.js";
 import { Footer } from "./nav/Footer.js";
 import { logoutUser, setLoggedInUser, loginUser, registerUser, getLoggedInUser, getSnacks, getSingleSnack, getToppings, getSnackToppings, useToppingsCollection, useSnackCollection } from "./data/apiManager.js";
+import { modalFunction } from "./nav/ModalFunction.js";
 
 
 const applicationElement = document.querySelector("#ldsnacks");
@@ -54,6 +55,31 @@ applicationElement.addEventListener("click", event => {
 		checkForUser();
 	}
 })
+
+applicationElement.addEventListener("click", event => {
+    event.preventDefault();
+    if (event.target.id === "newPost__submit") {
+        const name = document.querySelector("input[name='addSnackNameHere']").value
+        const snackImg = document.querySelector("input[name='addSnackImageHere']").value
+        const count = document.querySelector("input[name='addSnackCountHere']").value
+        const inFlavorId = document.querySelector("input[name='addSnackShapeHere']").value
+        const shapeId = document.querySelector("input[name='addSnackFlavorHere']").value
+        const seasonId = document.querySelector("input[name='addSnackSeasonHere']").value
+        const description = document.querySelector("input[name='addSnackDescriptionHere']").value
+        const toppings = document.querySelector("input[name='addSnackToppingsHere']").value
+            const snackObj = {
+            name: name,
+            snackImg: snackImg, 
+            count: count,
+            shapeId: shapeId,
+            inFlavorId: inFlavorId,
+            seasonId: seasonId,
+            description: description,
+            toppings: toppings
+        }
+        createSnack(snackObj)
+    }
+});
 // end login register listeners
 
 // snack listeners
@@ -144,7 +170,7 @@ const startLDSnacks = () => {
 		applicationElement.innerHTML += `<div id="mainContent"></div>`;
 		showSnackList();
 		showFooter();
-	
+		modalFunction();
 	})
 	//toppingDropdown();
 }

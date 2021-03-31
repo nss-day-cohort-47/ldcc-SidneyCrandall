@@ -102,3 +102,16 @@ export const getToppings = () => {
 		return parsedResponse;
 	})
 };
+
+
+// make post
+export const createSnack = snackObj => {
+    return fetch(`${apiURL}/snacks`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(snackObj)
+        })
+        .then(response => response.json())
+}
