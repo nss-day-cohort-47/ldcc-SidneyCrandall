@@ -104,27 +104,26 @@ applicationElement.addEventListener("click", event => {
 })
 
 // Toppings listener
-
+// This Event Listener pulls from the function in NavBar.js. Utilizing .find() and .filter() to find the snacks that match the toppings that are chosen from the dropdown.
 applicationElement.addEventListener("change", event => {
 	event.preventDefault();
 	if(event.target.id === "toppingDropdown") {
-		let snackSelection = event.target.value
-		getSnackToppings(snackSelection)
-		.then(response => {
-			let selectToppingsArray = [];
-			response.find(topping => {
-				selectToppingsArray.push(topping.snack)
-				console.log("I can hear it")
-			})
-			const listElement = document.querySelector("#mainContent")
-			listElement.innerHTML = SnackList(selectToppingsArray)
+		const index = event.target.options.selectedIndex
+		const selectedTopping = event.target.options[index].value
+		const selectToppingsArray = useSnackCollection()
+		const filteredToppings = selectToppingsArray.filter(eachSnack => {
+			const snack = eachSnack.snackToppings.find(eachTopping => eachTopping.toppingId === parseInt(selectedTopping))
+			if (snack) {
+				return eachSnack
+			}
 		})
-	
+			const listElement = document.querySelector("#mainContent")
+			listElement.innerHTML = SnackList(filteredToppings)
 	}
 })
-
+	
+		
 // for snack detail button
-
 const showDetails = (snackObj, toppingObject) => {
 	const listElement = document.querySelector("#mainContent");
 	listElement.innerHTML = SnackDetails(snackObj);
@@ -163,6 +162,8 @@ const showFooter = () => {
 	applicationElement.innerHTML += Footer();
 }
 
+//A get function had to be used since a function inside the navbar controls the dropdown and other buttons.
+// A modal function was added for LD to add a snack at any time she would like. 
 const startLDSnacks = () => {
 	applicationElement.innerHTML = "";
 	getToppings().then(() =>{
@@ -172,15 +173,6 @@ const startLDSnacks = () => {
 		showFooter();
 		modalFunction();
 	})
-	//toppingDropdown();
 }
-
 checkForUser();
 
-
-	//getSnackToppings(snackChoice)
-			//.then(response => {
-				//let selectATopping = [];
-				//response.filter(topping => {
-					//selectATopping.find(topping => topping.toppingId === parseInt(snackChoice))
-				//})
